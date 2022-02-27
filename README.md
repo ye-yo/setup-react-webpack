@@ -159,6 +159,21 @@ module.exports = {
 }
 ```
 
+# 6. 실행 스크립트 작성
+
+`package.json`
+
+```
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  }
+
+```
+
+- production(배포) 모드 : 로드 시간을 줄이기 위해 번들 최소화, 가벼운 소스맵 및 애셋 최적화에 초점을 맞춤
+- development(개발) 모드 : 개발 생산성을 높이기 위한 모드. 버그발생 위험이 있는 코드를 미리 경고해주는 검증 코드도 포함되어 있다.
+
 # 용어 정리
 
 - #### preset
