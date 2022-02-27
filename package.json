@@ -1,0 +1,8 @@
+{
+  "name": "setup-react-webpack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ye-yo/setup-react-webpack.git",
+  "author": "ye-yo <yeyo0x0@gmail.com>",
+  "license": "MIT"
+}
