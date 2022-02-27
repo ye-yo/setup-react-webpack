@@ -66,12 +66,24 @@ yarn add -D @babel/core @babel/preset-react @babel/preset-env
 ## 4-1. 웹팩 설치
 
 ```
-yarn add -D webpack webpack-dev-server
+yarn add -D webpack webpack-cli webpack-dev-server
 ```
 
 - webpack: 웹팩 핵심 패키지
 - webpack-cli: 웹팩을 커맨드라인에서 사용할 수 있게 함.
 - webpack-dev-server: 웹팩 개발 서버를 구동할 수 있게 함. 실시간 리로딩을 지원한다.
+
+## 4-2. 로더 설치
+
+- Loader: js, json 파일 외의 html, css, images 폰트 등의 파일을 모듈로 불러와 번들링 하기 위해 사용.
+
+```
+yarn add -D babel-loader style-loader css-loader
+```
+
+- babel-loader: JSX 및 ES6+ 문법을 변환.
+- style-loader: 변환된 CSS파일은 `<style>` 태그로 삽입
+- css-loader: .css 파일을 읽기위한 로더
 
 # 용어 정리
 
