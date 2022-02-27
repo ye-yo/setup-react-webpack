@@ -1,4 +1,6 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin"); //index.html 파일을 dist 폴더에 index_bundle.js 파일과 함께 자동으로 생성
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -21,6 +23,10 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({ template: "./public/index.html" }), // index.html 파일 경로 재지정. 기본적으로 build시 dist 폴더에 index.html 파일이 생성되는데 이를 public/index.html로 옮긴 후 파일 경로를 수정해주어야 함. 이 때 html 파일 내의 script 태그는 제거한다.
+  ],
   devServer: {
     port: 3000,
   },

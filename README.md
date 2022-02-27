@@ -143,6 +143,22 @@ module: {
   },
 ```
 
+### 5-3. 플러그인 설정
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+module.exports = {
+...
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({ template: "./public/index.html" }),
+  ],
+  ...
+}
+```
+
 # 용어 정리
 
 - #### preset
