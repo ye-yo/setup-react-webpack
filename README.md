@@ -85,6 +85,17 @@ yarn add -D babel-loader style-loader css-loader
 - style-loader: 변환된 CSS파일은 `<style>` 태그로 삽입
 - css-loader: .css 파일을 읽기위한 로더
 
+## 4-3. 플러그인 설치
+
+- Plugin: 웹팩 번들링 후 변환된 파일에 추가적인 기능을 더하기 위해 사용한다.
+
+```
+yarn add -D html-webpack-plugin clean-webpack-plugin
+```
+
+- html-webpack-plugin: 번들링된 css파일과 js파일을 html파일에 `link`, `script` 태그로 추가해주어야 할 때 이를 자동화하여 html 파일을 생성해준다.
+- clean-webpack-plugion: 빌드된 결과물을 자동 정리하는 플러그인으로 이전 빌드 결과물을 제거한다.
+
 # 용어 정리
 
 - #### preset
