@@ -56,12 +56,31 @@ yarn add -D @babel/core @babel/preset-react @babel/preset-env
 }
 ```
 
+# 4. 웹팩 설치 및 설정
+
+- webpack: 모던 javascript 애플리케이션을 위한 정적 [모듈 번들러](#모듈-번들러)
+
+- [필요 이유](https://joshua1988.github.io/webpack-guide/motivation/why-webpack.html#%EC%9B%B9%ED%8C%A9%EC%9D%98-%EB%93%B1%EC%9E%A5-%EB%B0%B0%EA%B2%BD)
+- [기존 문제의 해결](https://joshua1988.github.io/webpack-guide/motivation/problem-to-solve.html)
+
+## 4-1. 웹팩 설치
+
+```
+yarn add -D webpack webpack-dev-server
+```
+
+- webpack: 웹팩 핵심 패키지
+- webpack-cli: 웹팩을 커맨드라인에서 사용할 수 있게 함.
+- webpack-dev-server: 웹팩 개발 서버를 구동할 수 있게 함. 실시간 리로딩을 지원한다.
+
 # 용어 정리
 
 - #### preset
   > plugin들을 모아놓은 bundle
 - #### polyfill
   > 브라우저에서 지원하지 않는 기능을 지원 가능하도록 작성한 코드를 말하며, transfile만으로 해결할 수 없는 기능을 구현한 코드이다.
+- #### 모듈 번들러
+  > 웹 애플리케이션을 구성하는 자원(HTML,CSS,Javascript,Images 등) 각각을 모두 모듈로 보고 이를 조합하여 병합된 하나의 결과물을 만드는 도구
 
 # 참고자료
 
@@ -69,3 +88,4 @@ yarn add -D @babel/core @babel/preset-react @babel/preset-env
 - [ReactDOM Docs](https://ko.reactjs.org/docs/react-dom.html)
 - [Babel Docs](https://babeljs.io/docs/en/)
 - [stack overflow - When to use babel.config.js and .babelrc](https://stackoverflow.com/questions/60288375/when-to-use-babel-config-js-and-babelrc)
+- [웹팩 핸드북](https://joshua1988.github.io/webpack-guide/webpack/what-is-webpack.html#%EB%AA%A8%EB%93%88%EC%9D%B4%EB%9E%80)
