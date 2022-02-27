@@ -128,6 +128,21 @@ module.exports = {
 };
 ```
 
+### 5-2. modules - loader 설정
+
+```js
+...
+module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: "/node_modules/",
+        use: "babel-loader",
+      },
+    ],
+  },
+```
+
 # 용어 정리
 
 - #### preset
