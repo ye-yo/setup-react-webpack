@@ -68,7 +68,7 @@ yarn add -D @babel/core @babel/preset-react @babel/preset-env
 }
 ```
 
-# 4. 웹팩 설치 및 설정
+# 4. 웹팩 관련 설치
 
 - webpack: 모던 javascript 애플리케이션을 위한 정적 [모듈 번들러](#모듈-번들러)
 
@@ -107,6 +107,26 @@ yarn add -D html-webpack-plugin clean-webpack-plugin
 
 - html-webpack-plugin: 번들링된 css파일과 js파일을 html파일에 `link`, `script` 태그로 추가해주어야 할 때 이를 자동화하여 html 파일을 생성해준다.
 - clean-webpack-plugion: 빌드된 결과물을 자동 정리하는 플러그인으로 이전 빌드 결과물을 제거한다.
+
+# 5. 웹팩 설정
+
+`webpack.config.js` 파일을 생성해 다음과 같이 작성한다.
+
+## 5-1. mode & entry & output 설정
+
+```js
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "./dist"),
+    filename: "[name].js",
+    publicPath: "/",
+  },
+};
+```
 
 # 용어 정리
 
