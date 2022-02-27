@@ -76,12 +76,12 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: "/node_modules/",
-        loader: "babel-loader",
+        exclude: '/node_modules/',
+        loader: 'babel-loader',
         options: {
           presets: [
-            "@babel/env",
-            ["@babel/preset-react", { runtime: "automatic" }],
+            '@babel/env',
+            ['@babel/preset-react', { runtime: 'automatic' }],
           ],
         },
       },
@@ -141,15 +141,15 @@ yarn add -D html-webpack-plugin clean-webpack-plugin
 ## 5-1. mode & entry & output 설정
 
 ```js
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  mode: "development",
-  entry: "./src/index.js",
+  mode: 'development',
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, "./dist"),
-    filename: "[name].js",
-    publicPath: "/",
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].js',
+    publicPath: '/',
   },
 };
 ```
@@ -231,7 +231,7 @@ resolve: {
 
 ```js
 module.exports = {
-  devtool: "cheap-eval-source-map",
+  devtool: 'cheap-eval-source-map',
 };
 ```
 
@@ -287,13 +287,13 @@ module.exports = {
 ### 환경 변수와 같은 전역 변수 사용 - DefinePlugin
 
 ```js
-const webpack = require("webpack");
+const webpack = require('webpack');
 
 module.exports = {
   //...
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": '"production"',
+      'process.env.NODE_ENV': '"production"',
     }),
     /* EnviromentPlugin을 사용해도 됨.
     new webpack.EnvironmentPlugin({
@@ -317,11 +317,11 @@ module: {
   rules: [
     {
       test: /\.(png|svg|jpg|jpeg|gif)$/i,
-      type: "asset/resource",
+      type: 'asset/resource',
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf)$/i,
-      type: "asset/resource",
+      type: 'asset/resource',
     },
   ];
 }
@@ -338,6 +338,117 @@ module: {
 - 미디어 쿼리 플러그인 : media-query-plugin
   > 모바일/PC에서 각각 필요한 미디어 쿼리 코드만 추출해 비동기로 로드
 - CSS 최적화 플러그인 : css-minimazier-webpack-plugin
+
+# ESLint, Prettier 설정
+
+- ESLint : 코드를 일관된 방식으로 작성할 수 있도록 도움
+  EsmaScript 문법 오류가 있는 코드를 검사한다.
+- Prettier: 줄 바꿈이나 공백, 들여 쓰기 등의 일관된 작성을 도움
+
+## 1. ESLint 설치 및 설정
+
+### 1-1. ESLint 설치
+
+```
+yarn add -D eslint
+```
+
+\+ vscode에서 ESLint extension 설치
+
+### 1-2. ESLint 설정
+
+```
+npx eslint --init
+```
+
+질문을 통해 자동으로 `.eslintrc` 파일을 작성해줌.
+
+```
+1) To check syntax and file problems
+2) Javascript modules (import/export)
+3) React
+4) No
+5) Browser
+6) JS or JSON
+7) y
+```
+
+`.eslintrc` 파일 작성
+
+```json
+{
+  "root": true,
+  "plugins": ["eslint-plugin-react"],
+  "extends": ["eslint:recommended"],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "@typescript-eslint/strict-boolean-expressions": [
+      2,
+      {
+        "allowString": false,
+        "allowNumber": false
+      }
+    ]
+  }
+}
+```
+
+[ESLint Rules](https://eslint.org/docs/rules/)
+
+ignore은 `.eslintignore` 파일을 작성하거나 `.eslintrc` 파일의 `ignorePatters` 옵션에 작성한다.
+
+## 2. Prettier 설치 및 설정
+
+```
+yarn add -D prettier
+```
+
+## 2-2. 설정
+
+`.prettierrc.json`
+
+```json
+{
+  "semi": true, // ; 세미클론 사용
+  "useTabs": false, // tab키 사용. false 추천하며 false 시에는 space로 대체
+  "tabWidth": 2, // 탭 간격, 스페이스 설정 시 2칸 띄어쓰기
+  "singleQuote": true, //작은 따옴표 '' 사용
+  "trailingComma": "all", // 콤마(,) 자동으로 붙이기
+  "jsxSingleQuote": false,
+  "arrowParens": "always", // 괄호 유지
+  "bracketSpacing": "true", // 대괄호 {} 사이 공백
+  "jsxBracketSameLine": "true" // JSX 요소 > 줄바꿈
+}
+```
+
+[prettier 옵션](prettier.io/docs/en/options.html)
+
+ignore은 `.prettierignore` 작성
+기본적으로 `node_modules`는 ignore 함
+
+## 3. prettier, eslint 관련 설정 모듈 설치
+
+```
+yarn add -D eslint-plugin-prettier eslint-config-prettier
+```
+
+- eslint-plugin-prettier : eslint, prettier 사이에 충돌할 수 있는 설정을 비활성화 시켜준다.
+- eslint-config-prettier: eslint가 아닌 prettier의 포맷 기능을 사용하게 만들어 준다.
+
+## 4. vscode settings.json 설정
+
+cmd + shift + p 입력해서 나온 검색창에 settings.json 선택해서 settings.json 파일수정
+
+```json
+{
+  ...
+  "editor.codeActionsOnSave": { //save할 때 동작시키며 eslint 관련 요소들을 모두 수정한다.
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true, // 저장시 포맷을 자동 수정한다.
+  "editor.defaultFormatter": "esbenp.prettier-vscode"// 기본 포매터는 vscode extension으로 설치된 prettier를 사용한다.
+}
+```
 
 # 용어 정리
 
