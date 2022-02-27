@@ -68,6 +68,32 @@ yarn add -D @babel/core @babel/preset-react @babel/preset-env
 }
 ```
 
+혹은 `webpack.config.js`에서 loader 설정시 함께 설정
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: "/node_modules/",
+        loader: "babel-loader",
+        options: {
+          presets: [
+            "@babel/env",
+            ["@babel/preset-react", { runtime: "automatic" }],
+          ],
+        },
+      },
+    ],
+  },
+};
+```
+
+`runtime: "automatic"`
+
+> JSX를 React.createElement로 변환하는 것이 이전 방식인데 React17 이후부터 자동으로 React를 가져오는 방식으로 변경되어서 React import가 생략 가능. 하지만 `@babel/preset-react`에서 이를 사용하기 위해서 `runtime :automatic` 옵션 설정해주어야 함.(기본은 `classic`)
+
 # 4. 웹팩 관련 설치
 
 - webpack: 모던 javascript 애플리케이션을 위한 정적 [모듈 번들러](#모듈-번들러)
@@ -171,8 +197,147 @@ module.exports = {
 
 ```
 
+`webpack serve` = `webpack-dev-server`
+
 - production(배포) 모드 : 로드 시간을 줄이기 위해 번들 최소화, 가벼운 소스맵 및 애셋 최적화에 초점을 맞춤
 - development(개발) 모드 : 개발 생산성을 높이기 위한 모드. 버그발생 위험이 있는 코드를 미리 경고해주는 검증 코드도 포함되어 있다.
+
+# 7. 개발 시에 자주 사용하는 설정
+
+## 7-1. resolve 옵션
+
+```js
+resolve: {
+  extensions: ['.js', '.jsx'],
+  alias: {
+    Utilities: path.resolve(__dirname, 'src/utilities/'), //import Utility from 'Utilities/utility'; 사용 가능
+  },
+}
+```
+
+#### extensions
+
+> 웹팩이 모듈을 처리하는 방식을 설정하며 앞에서 부터 차례대로 파일을 해석한다. 이 설정을 통해 import시 확장자를 생략할 수 있다.(설정해주지 않고 .jsx 파일을 확장자 없이 import시 오류 발생)
+
+#### alias
+
+> 특정 경로에 별칭을 지정하여 사용할 수 있다.
+
+## 7-2. devtool 옵션
+
+#### 소스맵 설정
+
+**Source Map** : 배포용으로 빌드한 파일과 원본 파일을 연결시켜주는 기능으로, 에러가 발생한 배포용 파일의 특정 부분이 원본에서 어느 부분인지 확인이 가능하다.
+
+```js
+module.exports = {
+  devtool: "cheap-eval-source-map",
+};
+```
+
+## 7-3. devServer 옵션
+
+```js
+module.exports = {
+  ...
+  devServer: {
+    hot: true,
+    open: true,
+    historyApiFallback: true,
+  }
+}
+```
+
+### 서버 실행 시 자동으로 브라우저 열기 - open : true
+
+`devServer` option에 작성하는 내용들은 `package.json` `scripts`에 옵션으로 추가하여 사용할 수도 있다.`"start": "webpack serve --open"`
+
+### 주소창에 url 직접 입력시/새로고침 시 404 에러 문제 - historyApiFallback : true
+
+**historyApiFallback**
+
+> History API 또는 react-router 사용시 설정해 놓은 url 이외의 경로로 접속했을 때에도 index.html을 제공할지 결정하는 옵션
+
+### 웹팩으로 빌드한 결과물 실시간으로 반영 - hot : true
+
+**HMR(Hot Module Replacement)**
+
+> 새로고침 없이 웹팩으로 빌드한 결과물이 실시간으로 반영될 수 있게 도와주는 설정
+
+### 프록시 설정 - CORS 에러 해결
+
+```js
+module.exports = {
+  ...
+  devServer: {
+    proxy: {
+       '/api': {
+        target: 'domain.com',
+        changeOrigin: true
+      }
+    }
+  }
+};
+```
+
+위와 같이 설정하면 API 요청시 `domain.com` 주소에서는 같은 도메인에서 온 요청으로 인식하여 CORS 에러가 나지 않음.
+
+## 7-4. 플러그인
+
+### 환경 변수와 같은 전역 변수 사용 - DefinePlugin
+
+```js
+const webpack = require("webpack");
+
+module.exports = {
+  //...
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": '"production"',
+    }),
+    /* EnviromentPlugin을 사용해도 됨.
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development' 
+    })
+    */
+  ],
+};
+```
+
+### CSS 파일 분리 - MiniCssExtractPlugin
+
+CSS 파일을 별도로 분리하하여 번들링하는 플러그인으로 큰 사이즈의 애플리케이션의 경우 사용하면 좋고 배포 시에 사용한다.
+(style-loader는 css파일을 읽어 `<style>`로 만들어 `<head>` 태그에 삽입하는 js 코드를 생성하는데 이러한 css파일이 많을 경우 js 파일도 크기가 늘어날 수밖에 없음. => css 파일을 별도로 분리하여 번들링하는 것이 좋음
+\*style-loader와 함께 사용 불가)
+
+## 7-5. module 옵션
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.(png|svg|jpg|jpeg|gif)$/i,
+      type: "asset/resource",
+    },
+    {
+      test: /\.(woff|woff2|eot|ttf|otf)$/i,
+      type: "asset/resource",
+    },
+  ];
+}
+```
+
+`type: "asset/resoure"` : asset을 별도의 파일로 내보내는 모듈
+용량이 비교적 작은 svg 파일은 inline으로 번들에 포함시키는 것이 좋음
+`type : "asset/inline"`
+
+## 7-5. 그 외 플러그인
+
+- 자바스크립트 번들 사이즈를 줄이는 uglity(코드 난독화) 플러그인 : terser-webpack-plugin
+- 이미지 파일 최적화 플러그인 : image-minimizer-webpack-plugin
+- 미디어 쿼리 플러그인 : media-query-plugin
+  > 모바일/PC에서 각각 필요한 미디어 쿼리 코드만 추출해 비동기로 로드
+- CSS 최적화 플러그인 : css-minimazier-webpack-plugin
 
 # 용어 정리
 
