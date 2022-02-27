@@ -4,9 +4,21 @@ CRA(create-react-app) 없이 웹팩을 이용해 리액트 개발환경을 직�
 
 # 1. 폴더 초기화
 
+## 1-1. init 명령어를 통해 `package.json`파일이 생성된다.
+
 ```
 yarn init -y
 ```
+
+# 1-2. 프로젝트에 필요한 폴더를 생성한다.
+
+```
+mkdir src public dist
+```
+
+- src: react를 위한 폴더
+- public: 정적 html 폴더
+- dist : 번들링한 결과물이 저장될 폴더
 
 # 2. 리액트 설치
 
