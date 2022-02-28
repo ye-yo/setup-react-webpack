@@ -331,7 +331,20 @@ module: {
 용량이 비교적 작은 svg 파일은 inline으로 번들에 포함시키는 것이 좋음
 `type : "asset/inline"`
 
-## 7-5. 그 외 플러그인
+\+ svg 사용위해서 svgr 설치
+
+```
+yarn add -D @svgr/webpack
+```
+
+```js
+ {
+    test: /\.svg$/,
+    use: ['@svgr/webpack'],
+  },
+```
+
+## 7-6. 그 외 플러그인
 
 - 자바스크립트 번들 사이즈를 줄이는 uglity(코드 난독화) 플러그인 : terser-webpack-plugin
 - 이미지 파일 최적화 플러그인 : image-minimizer-webpack-plugin
